@@ -8,6 +8,18 @@
  ******************************************************************************/
 RGBTile myTile;
 
+// buffer and required setup for saving programs to Arduino
+#if defined(EEPROM_MICROCHIP_24XX32A)
+	#define ENDDB 4095
+	#define ENDEEPROM 4095
+#else
+	#define ENDDB E2END
+	#define ENDEEPROM E2END
+#endif
+#define SIZE_PRG_BUFFER 512
+#define ENDDB (E2END - SIZE_PRG_BUFFER) // reserve space in EEPROM
+char prg_buffer[SIZE_PRG_BUFFER] = "twinkle()";
+
 /*******************************************************************************
  * bitlash functions
  ******************************************************************************/
@@ -39,27 +51,34 @@ numvar bitlash_draw() {
         myTile.colorPixel(getarg(1), getarg(2), getarg(3));
         myTile.drawAll();
     }
-    
+
     // do nothing if arg count incorrect
+    return (numvar) 1;
+}
+
+// write( str) # display string of characters
+// write(str, color)
+numvar bitlash_write() {
+    //myTile.drawLetter('m');
+
+    if(getarg(0) == 1 && isstringarg(1)) {
+        char *s = (char *) getstringarg(1);
+        
+        for(int i = 0; s[i] != '\0'; i++) {
+            myTile.drawLetter(s[i]);
+            delay(500);
+        }
+    }
+    
     return (numvar) 1;
 }
 
 /*******************************************************************************
  * main program
  ******************************************************************************/
-#if defined(EEPROM_MICROCHIP_24XX32A)
-	#define ENDDB 4095
-	#define ENDEEPROM 4095
-#else
-	#define ENDDB E2END
-	#define ENDEEPROM E2END
-#endif
-#define SIZE_PRG_BUFFER 512
-#define ENDDB (E2END - SIZE_PRG_BUFFER) // reserve space in EEPROM
-char prg_buffer[SIZE_PRG_BUFFER] = "twinkle()";
-
 void setup() {
     
+    /* diable serial load
     Serial.begin(57600);
     int bytes_read = Serial.readBytes(prg_buffer, SIZE_PRG_BUFFER - 1);
     
@@ -72,14 +91,15 @@ void setup() {
         for(int i = ENDDB; i < ENDEEPROM; i++) {
             prg_buffer[i - ENDDB] = EEPROM.read(i);    
         }
-    }
+    } // end disable serial load */ 
     
     initBitlash(57600);
     // all new function names MUST be lower cas
     addBitlashFunction("twinkle", (bitlash_function) bitlash_twinkle);
-    //addBitlashFunction("draw", (bitlash_function) bitlash_draw);
+    addBitlashFunction("draw", (bitlash_function) bitlash_draw);
+    addBitlashFunction("write", (bitlash_function) bitlash_write);
     
-    doCommand(prg_buffer);
+    //doCommand(prg_buffer);
 }
 
 void loop() {
