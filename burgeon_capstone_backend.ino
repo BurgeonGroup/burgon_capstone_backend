@@ -105,20 +105,15 @@ void setup() {
     } // end disable serial load */ 
     
     initBitlash(57600);
-    // all new function names MUST be lower cas
+    // all new function names MUST be lower case
     addBitlashFunction("twinkle", (bitlash_function) bitlash_twinkle);
     addBitlashFunction("draw", (bitlash_function) bitlash_draw);
     addBitlashFunction("write", (bitlash_function) bitlash_write);
     addBitlashFunction("clear", (bitlash_function) bitlash_clear);
 
-    
     //doCommand(prg_buffer);
 }
 
 void loop() {
-    
-
     runBitlash();
-    //myTile.twinkle();
-    //delay(250);
 }
