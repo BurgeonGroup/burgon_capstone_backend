@@ -71,11 +71,9 @@ numvar bitlash_color() {
     return (numvar) 0;
 }
 
-// write( str) # display string of characters
+// write( str ) # display string of characters
 // write(str, color)
 numvar bitlash_write() {
-    //myTile.drawLetter('m');
-
     if(getarg(0) == 1 && isstringarg(1)) {
         char *s = (char *) getstringarg(1);
         
@@ -118,7 +116,7 @@ numvar bitlash_wait() {
  ******************************************************************************/
 void setup() {
     
-    /* diable serial load
+    //*
     Serial.begin(57600);
     int bytes_read = Serial.readBytes(prg_buffer, SIZE_PRG_BUFFER - 1);
     
@@ -131,7 +129,7 @@ void setup() {
         for(int i = ENDDB; i < ENDEEPROM; i++) {
             prg_buffer[i - ENDDB] = EEPROM.read(i);    
         }
-    } // end disable serial load */
+    } // */
     
     // start by coloring in a nice gradient
     for(int i = 0; i < 5; i++) {
@@ -151,7 +149,7 @@ void setup() {
     addBitlashFunction("clear", (bitlash_function) bitlash_clear);
     addBitlashFunction("wait", (bitlash_function) bitlash_wait);
 
-    //doCommand(prg_buffer);
+    doCommand(prg_buffer);
 }
 
 void loop() {
