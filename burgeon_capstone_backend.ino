@@ -73,6 +73,17 @@ numvar bitlash_write() {
     return (numvar) 1;
 }
 
+// clear () # clear whole tile
+// clear(x,y) # single led
+numvar bitlash_clear() {
+    for(int i = 0; i < 5; i++) {
+        for(int j = 0; j < 5; j++) {
+            myTile.colorPixel(i, j, 0);
+        }
+    }
+    myTile.drawAll();
+}
+
 /*******************************************************************************
  * main program
  ******************************************************************************/
@@ -98,6 +109,8 @@ void setup() {
     addBitlashFunction("twinkle", (bitlash_function) bitlash_twinkle);
     addBitlashFunction("draw", (bitlash_function) bitlash_draw);
     addBitlashFunction("write", (bitlash_function) bitlash_write);
+    addBitlashFunction("clear", (bitlash_function) bitlash_clear);
+
     
     //doCommand(prg_buffer);
 }
