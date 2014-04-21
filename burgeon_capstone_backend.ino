@@ -44,7 +44,7 @@ numvar bitlash_twinkle() {
         delay(500);
     }
     
-    return (numvar) 0;
+    return (numvar) 1;
 }
 
 // draw(x, y) : color pixel white, no draw_all required
@@ -97,7 +97,21 @@ numvar bitlash_clear() {
         }
     }
     myTile.drawAll();
+    return (numvar) 1;
 }
+
+// wait() # defualt time = 1 sec
+// wait( time ) # in seconds 
+numvar bitlash_wait() {
+    if(getarg(0) == 1) {
+        delay(getarg(1) * 1000); // convert to sec
+    } else {
+        delay(1000); // default delay is 1 sec   
+    }
+
+    return (numvar) 0;
+}
+
 
 /*******************************************************************************
  * main program
@@ -135,7 +149,7 @@ void setup() {
     addBitlashFunction("write", (bitlash_function) bitlash_write);
     addBitlashFunction("color", (bitlash_function) bitlash_color);
     addBitlashFunction("clear", (bitlash_function) bitlash_clear);
-    
+    addBitlashFunction("wait", (bitlash_function) bitlash_wait);
 
     //doCommand(prg_buffer);
 }
