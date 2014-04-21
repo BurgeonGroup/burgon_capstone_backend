@@ -23,19 +23,25 @@ char prg_buffer[SIZE_PRG_BUFFER] = "twinkle()";
 /*******************************************************************************
  * bitlash functions
  ******************************************************************************/
-// twinkle() : defualt non-epileptic speed and using current board colors
+// twinkle() : defualt non-epileptic speed and white LEDs
 // twinkle(color) : defualt speed but board colored with color first 
 numvar bitlash_twinkle() {
+    numvar color = 0xffffff; // defualt to white
+    
     if(getarg(0) == 1) {
-        numvar color = getarg(1);
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 5; j++)
-                myTile.colorPixel(i, j, (uint32_t)color);
+        color = getarg(1);
+    }
+    
+    // color board
+    for(int i = 0; i < 5; i++) {
+        for(int j = 0; j < 5; j++) {
+            myTile.colorPixel(i, j, (uint32_t)color);
+        }
     }
     
     while(1) {
         myTile.twinkle();
-        delay(250);
+        delay(500);
     }
     
     return (numvar) 0;
@@ -102,8 +108,17 @@ void setup() {
         for(int i = ENDDB; i < ENDEEPROM; i++) {
             prg_buffer[i - ENDDB] = EEPROM.read(i);    
         }
-    } // end disable serial load */ 
+    } // end disable serial load */
     
+    // start by coloring in a nice gradient
+    for(int i = 0; i < 5; i++) {
+        for(int j = 0; j < 5; j++) {
+            myTile.colorPixel(i, j, 100, 0, map(i * 5 + j, 0, 24, 0, 255));
+        }
+    }
+    myTile.drawAll();
+    
+    // setup bitlash
     initBitlash(57600);
     // all new function names MUST be lower case
     addBitlashFunction("twinkle", (bitlash_function) bitlash_twinkle);
