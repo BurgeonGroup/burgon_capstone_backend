@@ -62,6 +62,15 @@ numvar bitlash_draw() {
     return (numvar) 1;
 }
 
+// color(r, g, b) # returns a color, r/g/b values between 0 and 255
+numvar bitlash_color() {
+    if(getarg(0) == 3) {
+        return (numvar) Color(getarg(1), getarg(2), getarg(3));
+    }
+    // if arg count incorrect return "no color" or off
+    return (numvar) 0;
+}
+
 // write( str) # display string of characters
 // write(str, color)
 numvar bitlash_write() {
@@ -124,7 +133,9 @@ void setup() {
     addBitlashFunction("twinkle", (bitlash_function) bitlash_twinkle);
     addBitlashFunction("draw", (bitlash_function) bitlash_draw);
     addBitlashFunction("write", (bitlash_function) bitlash_write);
+    addBitlashFunction("color", (bitlash_function) bitlash_color);
     addBitlashFunction("clear", (bitlash_function) bitlash_clear);
+    
 
     //doCommand(prg_buffer);
 }
