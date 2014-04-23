@@ -21,6 +21,17 @@ RGBTile myTile;
 char prg_buffer[SIZE_PRG_BUFFER] = "twinkle()";
 
 /*******************************************************************************
+ * util
+ ******************************************************************************/
+void color_board(uint32_t color) {
+    for(int i = 0; i < 5; i++) {
+        for(int j = 0; j < 5; j++) {
+            myTile.colorPixel(i, j, color);
+        }
+    }
+}
+
+/*******************************************************************************
  * bitlash functions
  ******************************************************************************/
 // twinkle() : defualt non-epileptic speed and white LEDs
@@ -74,7 +85,15 @@ numvar bitlash_color() {
 // write( str ) # display string of characters
 // write(str, color)
 numvar bitlash_write() {
-    if(getarg(0) == 1 && isstringarg(1)) {
+    numvar color = 0xffffff; // defualt to white
+    
+    if(getarg(0) >= 2) {
+        color = getarg(2);
+    }
+    
+    color_board((uint32_t)color);
+    
+    if(getarg(0) >= 1 && isstringarg(1)) {
         char *s = (char *) getstringarg(1);
         
         for(int i = 0; s[i] != '\0'; i++) {
@@ -131,13 +150,8 @@ void setup() {
         }
     } // */
     
-    // start by coloring in a nice gradient
-    for(int i = 0; i < 5; i++) {
-        for(int j = 0; j < 5; j++) {
-            myTile.colorPixel(i, j, 100, 0, map(i * 5 + j, 0, 24, 0, 255));
-        }
-    }
-    myTile.drawAll();
+    // start by clearing board
+    color_board(0);
     
     // setup bitlash
     initBitlash(57600);
