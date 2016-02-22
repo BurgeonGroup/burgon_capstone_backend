@@ -1,0 +1,16 @@
+This will only compile for me in the IDE version 1.0.6
+Error from 
+Arduino: 1.6.4 (Windows 8.1), Board: "Arduino Uno"
+
+In file included from C:\Program Files (x86)\arduino-1.6.4\hardware\arduino\avr\cores\arduino/Arduino.h:28:0,
+                 from C:\Program Files (x86)\arduino-1.6.4\hardware\arduino\avr\libraries\SPI/SPI.h:17,
+                 from burgeon_capstone_backend.ino:2:
+C:\Users\Doug\Documents\Arduino\libraries\RGBTile-master/ALNUMS.h:12:25: error: variable 'ALNUMS' must be const in order to be put into read-only section by means of '__attribute__((progmem))'
+ extern byte ALNUMS[][5] PROGMEM;
+                         ^
+Error compiling.
+
+  This report would have more information with
+  "Show verbose output during compilation"
+  enabled in File > Preferences.
+Same error from linux version 1.0.1
